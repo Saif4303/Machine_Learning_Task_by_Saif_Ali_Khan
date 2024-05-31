@@ -36,7 +36,9 @@ This project implements a nested time series cross-validation strategy for group
 
 2. Install the required packages:
    ```
-   pip install pandas scikit-learn statsmodels
+   pip install pandas
+   pip install scikit-learn
+   pip install statsmodels
    ```
 
 ## Usage
