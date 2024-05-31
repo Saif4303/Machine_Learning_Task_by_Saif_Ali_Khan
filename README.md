@@ -31,8 +31,7 @@ This project implements a nested time series cross-validation strategy for group
 
 1. Clone the repository:
    ```
-   git clone https://github.com/your-repo/nested-ts-cv.git
-   cd nested-ts-cv
+   git clone https://github.com/Saif4303/Machine_Learning_Task_by_Saif_Ali_Khan.git
    ```
 
 2. Install the required packages:
