@@ -51,42 +51,49 @@ The `NestedCV` class is designed to split the dataset into nested time series cr
 
 ```python
 import pandas as pd
-from cv import NestedCV
 
-# Sample data
-data = pd.DataFrame({
-    'date': pd.date_range(start='2022-01-01', periods=50),
-    'city': ['A']*25 + ['B']*25,
-    'quantity': range(50)
-})
+from types import GeneratorType
 
-# Initialize nested CV
-k = 5
-cv = NestedCV(k)
-splits = cv.split(data, "date")
+class NestedCV:
+    def __init__(self, k):
+        self.k = k
 
-# Check return type
-assert isinstance(splits, GeneratorType)
+    def split(self, data, date_column):
+        # Write Nested Cross validation for time series
+        # logic here and return the train and validate dataframes
+        # return a generator object for the splits
 
-# Check return types, shapes, and data leaks
-count = 0
-for train, validate, test in splits:
-    # Types
-    assert isinstance(train, pd.DataFrame)
-    assert isinstance(validate, pd.DataFrame)
-    assert isinstance(test, pd.DataFrame)
+if __name__ == "__main__":
+    # load dataset
+    data = pd.read_csv("paht to dataset")
+    data["date"] = pd.to_datetime(data["date"])
 
-    # Shape
-    assert train.shape[1] == validate.shape[1] == test.shape[1]
+    # nested cv
+    k = 3
+    cv = NestedCV(k)
+    splits = cv.split(data, "date")
 
-    # Data leak
-    assert train["date"].max() <= validate["date"].min()
-    assert validate["date"].max() <= test["date"].min()
+    # check return type
+    assert isinstance(splits, GeneratorType)
 
-    count += 1
+    # check return types, shapes, and data leaks
+    count = 0
+    for train, validate in splits:
+        
+        # types
+        assert isinstance(train, pd.DataFrame)
+        assert isinstance(validate, pd.DataFrame)
 
-# Check number of splits returned
-assert count == k * (k + 1)
+        # shape
+        assert train.shape[1] == validate.shape[1]
+
+        # data leak
+        assert train["date"].max() <= validate["date"].min()
+
+        count += 1
+
+    # check number of splits returned
+    assert count == k
 ```
 
 ### Model Evaluation
